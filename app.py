@@ -29,7 +29,7 @@ class Product(db.Model):
 @app.route('/')
 def index():
     categories = Category.query.all()
-    return render_template('index.html', categories = categories)
+    return render_template('index.html.jinja2', categories = categories)
 
 @app.route('/add_category', methods = ['POST'])
 def add_category():
