@@ -1,11 +1,16 @@
 import os 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-#from src.models.models import db
-#from src.controllers import login_controller
+from controllers import login_controller, product_list_controller, product_controller, category_controller, auth_controller 
+
+app.register_blueprint(login_controller.bp)
+app.register_blueprint(product_list_controller.bp)
+app.register_blueprint(product_controller.bp)
+app.register_blueprint(category_controller.bp)
+app.register_blueprint(auth_controller.bp)   
 
 app = Flask(__name__)
-app.config('SQLALCHEMY_DATABASE_URI') = 'sqlite.///grocery_store.db'
+app.config('SQLALCHEMY_DATABASE_URI') = 'sqlite.///db.sqlite3'
 db = SQLAlchemy(app)
 
 class Category(db.Model):
@@ -52,5 +57,5 @@ def add_product():
 if __name__ == '__main__':
     db.create_all()
     app.run(debug = True)
-    
+
 
