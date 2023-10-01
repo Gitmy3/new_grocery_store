@@ -1,7 +1,8 @@
 import os 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from controllers import login_controller, product_list_controller, product_controller, category_controller, auth_controller 
+#from src.models.models import db 
+from src.controllers import login_controller, product_list_controller, product_controller, category_controller, auth_controller 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///grocery_db.sqlite3" 
