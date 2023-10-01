@@ -12,7 +12,15 @@ app.register_blueprint(login_controller.bp)
 app.register_blueprint(product_list_controller.bp)
 app.register_blueprint(product_controller.bp)
 app.register_blueprint(category_controller.bp)
-app.register_blueprint(auth_controller.bp)   
+app.register_blueprint(auth_controller.bp)
+
+def handle_error(fn):
+    def internal(*args, **kwargs):
+        try: 
+            return fn(*args, **kwargs)
+        except:
+            return render_template('404.html.jinja2', user = None)
+    return internal
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
