@@ -8,11 +8,13 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///grocery_db.sqlite3" 
 db = SQLAlchemy(app)   
 
-app.register_blueprint(login_controller.bp)
-app.register_blueprint(product_list_controller.bp)
-app.register_blueprint(product_controller.bp)
-app.register_blueprint(category_controller.bp)
-app.register_blueprint(auth_controller.bp)
+# Register blueprints from different controllers
+
+app.register_blueprint(login_controller.login_bp, url_prefix = '/login')
+app.register_blueprint(product_list_controller.product_list_bp, url_prefix = '/product-list')
+app.register_blueprint(product_controller.product_bp, url_prefix = '/product')
+app.register_blueprint(category_controller.category_bp, url_prefix = '/category')
+app.register_blueprint(auth_controller.auth_bp, url_prefix = '/auth')
 
 def handle_error(fn):
     def internal(*args, **kwargs):
@@ -61,7 +63,29 @@ def add_product():
                           rate_per_unit = rate_per_unit, category_id = category_id)
         db.session.add(product)
         db.session.commit()
+    return redirect(url_for('index')) 
+
+# DELETE CATEGORY 
+
+@app.route('/delete_category/<int:category_id>', methods = ['POST'])
+def delete_category(category_id):
+    if request.method == 'POST':
+        category = Category.query.get_or_404(category_id)
+        db.session.delete(category)
+        db.session.commit()
     return redirect(url_for('index'))
+
+# DELETE PRODUCT
+
+@app.route('/delete_product/<int:product_id>', methods = ['POST'])
+def delete_product(product_id):
+    if request.method == 'POST':
+        product = Product.query.get_or_404(product_id)
+        db.session.delete(product)
+        db.session.commit()
+    return redirect(url_for('index'))
+
+# Running of the App
 
 if __name__ == '__main__':
     db.create_all()
