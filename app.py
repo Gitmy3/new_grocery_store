@@ -3,15 +3,15 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from controllers import login_controller, product_list_controller, product_controller, category_controller, auth_controller 
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///grocery_db.sqlite3" 
+db = SQLAlchemy(app)   
+
 app.register_blueprint(login_controller.bp)
 app.register_blueprint(product_list_controller.bp)
 app.register_blueprint(product_controller.bp)
 app.register_blueprint(category_controller.bp)
 app.register_blueprint(auth_controller.bp)   
-
-app = Flask(__name__)
-app.config('SQLALCHEMY_DATABASE_URI') = 'sqlite.///db.sqlite3'
-db = SQLAlchemy(app)
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
